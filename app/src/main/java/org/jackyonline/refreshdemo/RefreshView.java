@@ -14,6 +14,14 @@ import android.widget.TextView;
 
 public class RefreshView extends FrameLayout implements CanRefresh {
 
+    /** 下拉刷新 **/
+    private static final int STATE_PULL = 1;
+    /** 上拉加载 **/
+    private static final int STATE_PUSH = 2;
+    /** 当前模式 **/
+    private int currentState = STATE_PULL;
+
+
     private ImageView ivArrow;
 
     private TextView tvRefresh;
@@ -28,10 +36,15 @@ public class RefreshView extends FrameLayout implements CanRefresh {
     //下拉箭头是否已经旋转
     private boolean rotated = false;
 
-    private CharSequence completeStr = "complete";
-    private CharSequence refreshingStr = "refreshing";
-    private CharSequence pullStr = "pull";
-    private CharSequence releaseStr = "release";
+    private CharSequence completeStr = "刷新完成";
+    private CharSequence refreshingStr = "正在刷新...";
+    private CharSequence pullStr = "下拉刷新";
+    private CharSequence releaseStr = "释放刷新";
+
+    private CharSequence completePushStr = "加载完成";
+    private CharSequence pushStr = "上拉加载更多";
+    private CharSequence releasePushStr = "释放加载";
+    private CharSequence loadingMoreStr = "正在加载...";
 
     public RefreshView(Context context) {
         this(context, null);
@@ -119,7 +132,12 @@ public class RefreshView extends FrameLayout implements CanRefresh {
         ivArrow.clearAnimation();
         ivArrow.setVisibility(GONE);
         progressBar.setVisibility(GONE);
-        tvRefresh.setText(completeStr);
+
+        if(currentState == STATE_PULL) {
+            tvRefresh.setText(completeStr);
+        }else {
+            tvRefresh.setText(completePushStr);
+        }
     }
 
     //手势释放进行刷新操作
@@ -129,7 +147,11 @@ public class RefreshView extends FrameLayout implements CanRefresh {
         ivArrow.clearAnimation();
         ivArrow.setVisibility(GONE);
         progressBar.setVisibility(VISIBLE);
-        tvRefresh.setText(refreshingStr);
+        if(currentState == STATE_PULL) {
+            tvRefresh.setText(refreshingStr);
+        }else {
+            tvRefresh.setText(loadingMoreStr);
+        }
     }
 
     //下拉高度和头部高度比例
@@ -144,10 +166,17 @@ public class RefreshView extends FrameLayout implements CanRefresh {
                 ivArrow.startAnimation(rotateDown);
                 rotated = false;
             }
-
-            tvRefresh.setText(pullStr);
+            if(currentState == STATE_PULL) {
+                tvRefresh.setText(pullStr);
+            }else {
+                tvRefresh.setText(pushStr);
+            }
         } else {
-            tvRefresh.setText(releaseStr);
+            if(currentState == STATE_PULL) {
+                tvRefresh.setText(releaseStr);
+            }else {
+                tvRefresh.setText(releasePushStr);
+            }
             if (!rotated) {
                 //如果箭头还没有旋转，则旋转箭头
                 ivArrow.clearAnimation();
@@ -161,8 +190,12 @@ public class RefreshView extends FrameLayout implements CanRefresh {
     @Override
     public void setIsHeaderOrFooter(boolean isHead) {
         if (!isHead) {
-            //如果不是上方的下拉刷新，箭头应该是朝上的，所以旋转了180度
+            //上拉加载更多
             ivArrow.setRotation(180);
+            currentState = STATE_PUSH;
+        }else{
+            //下拉刷新
+            currentState = STATE_PULL;
         }
     }
 }

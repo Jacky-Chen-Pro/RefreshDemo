@@ -16,8 +16,14 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:onClick="goWebView"
+    android:onClick="goWebView"
+    android:layout_width="match_parent"
+    android:text="包裹WebView"
+    android:layout_height="wrap_content" />
+
+    <Button
+        android:onClick="goRecyclerView"
         android:layout_width="match_parent"
-        android:text="包裹WebView"
+        android:text="包裹RecyclerView"
         android:layout_height="wrap_content" />
 </LinearLayout>

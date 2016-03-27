@@ -26,4 +26,8 @@ public class ChooseActivity extends FragmentActivity {
     public void goWebView(View view) {
         startActivity(new Intent(this,WebViewActivity.class));
     }
+
+    public void goRecyclerView(View view) {
+        startActivity(new Intent(this,RecyclerViewActivity.class));
+    }
 }

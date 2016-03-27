@@ -2,18 +2,15 @@ package org.jackyonline.refreshdemo;
 
 public interface CanRefresh {
 
-
     /**
      * 重置
      */
     void onReset();
 
-
     /**
      * 下拉高度大于头部高度
      */
     void onPrepare();
-
 
     /**
      * 放手后

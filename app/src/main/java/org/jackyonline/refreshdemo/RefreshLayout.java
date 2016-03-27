@@ -42,7 +42,7 @@ public class RefreshLayout extends ViewGroup {
     private int mDuration = 500;
 
     //摩擦系数
-    private float mFriction = 0.8f;
+    private float mFriction = 0.9f;
 
     //是否处于刷新状态或者加载更多状态
     private boolean mIsInRefreshMode = false;
@@ -381,7 +381,7 @@ public class RefreshLayout extends ViewGroup {
      * @return
      */
     private boolean canRefresh() {
-        return mIsCanRefresh && mHeaderView != null && !canChildScrollUp() && !mIsInRefreshMode;
+        return mIsCanRefresh && mHeaderView != null && !canChildScrollUp() && !mIsInRefreshMode && !mIsInLoadMode ;
     }
 
     /**
@@ -390,7 +390,7 @@ public class RefreshLayout extends ViewGroup {
      * @return
      */
     private boolean canLoadMore() {
-        return mIsCanLoad && mFooterView != null && !canChildScrollDown() && !mIsInLoadMode;
+        return mIsCanLoad && mFooterView != null && !canChildScrollDown() && !mIsInLoadMode && !mIsInRefreshMode;
     }
 
     private boolean touch(MotionEvent e, boolean isHead) {
